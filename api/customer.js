@@ -13,7 +13,7 @@ const customerSchema = new mongoose.Schema({
   name: String,
   email: String,
   phone: String,
-  address: String,
+  comments: String,
 });
 
 const Customer = mongoose.model("Customer", customerSchema);
@@ -46,9 +46,9 @@ module.exports = (req, res) => {
 
     if (req.method === 'POST') {
       try {
-        const { name, email, phone, address } = req.body;
+        const { name, email, phone, comments } = req.body;
 
-        const customerData = { name, email, phone, address };
+        const customerData = { name, email, phone, comments };
 
         const customer = new Customer(customerData);
         await customer.save();
@@ -58,7 +58,7 @@ module.exports = (req, res) => {
           Name: ${customerData.name}
           Email: ${customerData.email}
           Phone: ${customerData.phone}
-          Address: ${customerData.address}
+          Comments: ${customerData.comments}
         `;
 
         await transporter.sendMail({
