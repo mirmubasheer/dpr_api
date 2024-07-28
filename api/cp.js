@@ -2,7 +2,7 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
 const cors = require("cors")({
-  origin: true,
+  origin: 'http://localhost:3002',
   methods: ["POST", "OPTIONS"],
   allowedHeaders: ["Content-Type"],
   credentials: true,
