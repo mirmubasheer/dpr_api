@@ -2,7 +2,7 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
 const cors = require("cors")({
-  origin: 'http://localhost:3002',
+  origin: true,
   methods: ["POST", "OPTIONS"],
   allowedHeaders: ["Content-Type"],
   credentials: true,
@@ -10,7 +10,7 @@ const cors = require("cors")({
 
 const cpSchema = new mongoose.Schema({
   cpname: { type: String, required: true },
-  cpcomments: String,
+  cpaddress: String,
   cpemail: String,
   cpmobilenumber: String,
 });
@@ -45,9 +45,9 @@ module.exports = (req, res) => {
 
     if (req.method === 'POST') {
       try {
-        const { cpname, cpcomments, cpemail, cpmobilenumber } = req.body;
+        const { cpname, cpaddress, cpemail, cpmobilenumber } = req.body;
 
-        const cpData = { cpname, cpcomments, cpemail, cpmobilenumber };
+        const cpData = { cpname, cpaddress, cpemail, cpmobilenumber };
 
         const cp = new Cp(cpData);
         await cp.save();
@@ -57,7 +57,7 @@ module.exports = (req, res) => {
           CP Name: ${cpData.cpname}
           CP Email: ${cpData.cpemail}
           CP Mobile Number: ${cpData.cpmobilenumber}
-          CP Comments: ${cpData.cpcomments}
+          CP Address: ${cpData.cpaddress}
         `;
 
         await transporter.sendMail({
