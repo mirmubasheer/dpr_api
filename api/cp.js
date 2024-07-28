@@ -10,7 +10,7 @@ const cors = require("cors")({
 
 const cpSchema = new mongoose.Schema({
   cpname: { type: String, required: true },
-  cpaddress: String,
+  cpcomments: String,
   cpemail: String,
   cpmobilenumber: String,
 });
@@ -45,9 +45,9 @@ module.exports = (req, res) => {
 
     if (req.method === 'POST') {
       try {
-        const { cpname, cpaddress, cpemail, cpmobilenumber } = req.body;
+        const { cpname, cpcomments, cpemail, cpmobilenumber } = req.body;
 
-        const cpData = { cpname, cpaddress, cpemail, cpmobilenumber };
+        const cpData = { cpname, cpcomments, cpemail, cpmobilenumber };
 
         const cp = new Cp(cpData);
         await cp.save();
@@ -57,7 +57,7 @@ module.exports = (req, res) => {
           CP Name: ${cpData.cpname}
           CP Email: ${cpData.cpemail}
           CP Mobile Number: ${cpData.cpmobilenumber}
-          CP Address: ${cpData.cpaddress}
+          CP Comments: ${cpData.cpcomments}
         `;
 
         await transporter.sendMail({
