@@ -1,3 +1,4 @@
+
 require("dotenv").config();
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
@@ -67,6 +68,24 @@ module.exports = (req, res) => {
           subject: "New Customer Form Submission",
           text: emailBody,
         });
+
+           // Send data to Privyr
+           const privyrWebhookURL = `https://www.privyr.com/api/v1/incoming-leads/${process.env.PRIVYR_STRING_1}`;
+           const privyrPayload = {
+             name: customerData.name,
+             email: customerData.email,
+             phone: customerData.phone,
+             display_name: customerData.name,
+             other_fields: {
+               Address: customerData.address,
+             },
+           };
+
+           await axios.post(privyrWebhookURL, privyrPayload, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
 
         res.status(200).json({ message: "Customer data saved successfully" });
       } catch (err) {
