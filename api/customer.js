@@ -69,23 +69,24 @@ module.exports = (req, res) => {
           text: emailBody,
         });
 
-           // Send data to Privyr
-           const privyrWebhookURL = `https://www.privyr.com/api/v1/incoming-leads/${process.env.PRIVYR_STRING_1}`;
-           const privyrPayload = {
-             name: customerData.name,
-             email: customerData.email,
-             phone: customerData.phone,
-             display_name: customerData.name,
-             other_fields: {
-               Address: customerData.address,
-             },
-           };
 
-           await axios.post(privyrWebhookURL, privyrPayload, {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
+      // Send data to Privyr
+      const privyrWebhookURL = `https://www.privyr.com/api/v1/incoming-leads/${process.env.PRIVYR_STRING_1}/${process.env.PRIVYR_STRING_2}`;
+      const privyrPayload = {
+        name: customerData.name,
+        email: customerData.email,
+        phone: customerData.phone,
+        display_name: customerData.name,
+        other_fields: {
+          Comments: customerData.comments, // Changed from address to comments
+        },
+      };
+
+  await axios.post(privyrWebhookURL, privyrPayload, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
         res.status(200).json({ message: "Customer data saved successfully" });
       } catch (err) {
