@@ -1,8 +1,13 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
-const axios = require("axios");
-const cors = require("cors");
+const axios = require("axios");  // Ensure axios is imported
+const cors = require("cors")({
+  origin: true,
+  methods: ["POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"],
+  credentials: true,
+});
 
 // Define the customer schema and model
 const customerSchema = new mongoose.Schema({
@@ -34,7 +39,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
 module.exports = (req, res) => {
   // Apply CORS middleware
-  cors()(req, res, async () => {
+  cors(req, res, async () => {
     res.setHeader('Access-Control-Allow-Origin', '*'); // Adjust as needed
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
