@@ -36,15 +36,16 @@ mongoose.connect(process.env.MONGODB_URI)
     process.exit(1); // Exit the application if MongoDB connection fails
   });
 
-// Apply CORS middleware
+// Apply CORS middleware to all routes
 app.use(cors({
-  origin: '*', // Adjust as needed
+  origin: 'https://dprprop.com', // Adjust this to your frontend origin
   methods: ['POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type'],
   credentials: true,
 }));
 
-app.options('/customer', cors()); // Enable pre-flight requests for /customer
+// Enable pre-flight requests for all routes
+app.options('*', cors());
 
 app.post('/customer', async (req, res) => {
   try {
